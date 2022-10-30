@@ -1,12 +1,12 @@
 package AuthApp;
 
-public class UserService {
+class UserService {
 
     private static UserService singleInstance = null;
     private UserRepository userRepository;
 
     private UserService() {
-        userRepository = AuthApp.UserRepository.getInstance();
+        userRepository = UserRepository.getInstance();
     }
 
     public static UserService getInstance() {
@@ -23,14 +23,12 @@ public class UserService {
         userRepository.addUser(user);
     }
 
-
     public void updatedUserName(int id, String name) {
         userRepository.updatedUserName(id, name);
     }
 
     public void updateUserPassword(int id, String password) {
         userRepository.updateUserPassword(id, password);
-
     }
 
     public void updateUserEmail(int id, String email) {
@@ -40,5 +38,4 @@ public class UserService {
     public void deleteUser(int id) {
         userRepository.deleteUser(id);
     }
-
 }
