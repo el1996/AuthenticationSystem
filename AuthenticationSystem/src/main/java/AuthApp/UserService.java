@@ -4,14 +4,14 @@ import java.util.Optional;
 
 public class UserService {
 
-    public boolean mailConfirmed (String mail)
+    public boolean isEmailConfirmed (String mail)
     {
         if (getUserByEmail(mail).equal((Optional.empty())))
             return true;
         else return false;
     }
 
-    public boolean idConfirmed (int id)
+    public boolean isIdConfirmed (int id)
     {
         if (getUser(id).equal((Optional.empty())))
             return true;

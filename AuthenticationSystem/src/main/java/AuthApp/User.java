@@ -11,7 +11,7 @@ public class User {
     private String password;
 
     private User(String email, String name, String password) {
-        this.id= count.incrementAndGet();
+        this.id = count.incrementAndGet();
         this.email = email;
         this.name = name;
         this.password = password;
@@ -31,6 +31,6 @@ public class User {
 
     public void setPassword(String password) {this.password = password;}
 
-    public User userFacotory(String email, String name, String password) {
+    public User userFactory(String email, String name, String password) {
         return new User(email, name, password);}
 }
