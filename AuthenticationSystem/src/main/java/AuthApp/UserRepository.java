@@ -41,18 +41,37 @@ public class UserRepository {
         saveToFile();
     }
 
+    public void updatedUserNameByEmail(String email, String name) {
+
+        for (User user : usersMap.values()) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
+                user.setName(name);
+            }
+        }
+        saveToFile();
+    }
+
     public void updatedUserName(int id, String name) {
         this.usersMap.get(id).setName(name);
         saveToFile();
     }
 
-    public void updateUserPassword(int id, String password) {
-        this.usersMap.get(id).setPassword(password);
+    public void updateUserPassword(String email, String password) {
+        for (User user : usersMap.values()) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
+                user.setPassword(password);
+            }
+        }
         saveToFile();
     }
 
-    public void updateUserEmail(int id, String email) {
-        this.usersMap.get(id).setEmail(email);
+    public void updateUserEmail(String currentEmail, String newEmail) {
+
+        for (User user : usersMap.values()) {
+            if (user.getEmail().equalsIgnoreCase(currentEmail)) {
+                user.setEmail(newEmail);
+            }
+        }
         saveToFile();
     }
 
@@ -66,8 +85,13 @@ public class UserRepository {
         return Optional.empty();
     }
 
-    public void deleteUser(int id) {
-        this.usersMap.remove(id);
+    public void deleteUser(String email) {
+
+        for (User user : usersMap.values()) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
+                usersMap.remove(user.getId());
+            }
+        }
         saveToFile();
     }
 

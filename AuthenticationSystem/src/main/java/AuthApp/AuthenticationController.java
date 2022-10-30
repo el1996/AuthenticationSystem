@@ -40,15 +40,15 @@ public class AuthenticationController {
         this.authenticationService.register(email, name, password);
     }
 
-    private boolean isValidPassword(String password) {
+    public boolean isValidPassword(String password) {
         return password.matches(".*[A-Z].*") && password.length() >= 6;
     }
 
-    private boolean isValidName(String Name) {
+    public boolean isValidName(String Name) {
         return Name.matches("^[ A-Za-z]+$");
     }
 
-    public static boolean isValidEmail(String emailAddress) {
+    public boolean isValidEmail(String emailAddress) {
         String regexPattern = "^(.+)@(\\S+)$";
 
         return Pattern.compile(regexPattern)

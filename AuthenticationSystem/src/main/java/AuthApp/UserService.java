@@ -23,19 +23,23 @@ class UserService {
         userRepository.addUser(user);
     }
 
+    public void updatedUserNameByEmail(String email, String name) {
+        userRepository.updatedUserNameByEmail(email, name);
+    }
+
     public void updatedUserName(int id, String name) {
         userRepository.updatedUserName(id, name);
     }
 
-    public void updateUserPassword(int id, String password) {
-        userRepository.updateUserPassword(id, password);
+    public void updateUserPassword(String email, String password) {
+        userRepository.updateUserPassword(email, password);
     }
 
-    public void updateUserEmail(int id, String email) {
-        userRepository.updateUserEmail(id, email);
+    public void updateUserEmail(String currentEmail, String newEmail) {
+        userRepository.updateUserEmail(currentEmail, newEmail);
     }
 
-    public void deleteUser(int id) {
-        userRepository.deleteUser(id);
+    public void deleteUser(String email) {
+        userRepository.deleteUser(email);
     }
 }
