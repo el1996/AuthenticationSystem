@@ -1,21 +1,21 @@
 package AuthApp;
 
-import static AuthApp.UserService.generateToken;
 
 public class Client {
-    User user;
-    String token;
+    private final AuthenticationController authenticationController;
+    private final UserController userController;
+    private String token;
 
-    public Client(User user) {
-        this.user = user;
-        this.token= generateToken(10);
+    public Client() {
+        this.authenticationController = AuthenticationController.getInstance();
+        this.userController = UserController.getInstance();
     }
 
-    //register
-    //public boolean register (String email, String name, String password);
-    // log in
-    //public String logIn(int id ,String password);
+    public void login(String email, String password) {
+        this.token = authenticationController.login(email, password);
+    }
 
-
-
+    public void register(String email, String name, String password) {
+        authenticationController.register(email, name, password);
+    }
 }

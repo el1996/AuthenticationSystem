@@ -1,41 +1,44 @@
 package AuthApp;
 
-import static AuthApp.User.userFactory;
-
 public class UserService {
 
-    private static UserRepository singleInstance = null;
+    private static UserService singleInstance = null;
+    private UserRepository userRepository;
 
-    private UserService() {UserRepository = AuthApp.UserRepository.getInstance();}
+    private UserService() {
+        userRepository = AuthApp.UserRepository.getInstance();
+    }
 
-    public static UserRepository getInstance() {
+    public static UserService getInstance() {
         if (singleInstance == null) {
-            singleInstance = new UserRepository();
+            singleInstance = new UserService();
         }
 
         return singleInstance;
     }
 
-    public void createUser(String email,String name,String password)
+    public void createUser(String email, String name, String password)
     {
-        User user = userFactory(email,name,password);
-        singleInstance.addUser(user);
+        User user = User.createUser(email, name, password);
+        userRepository.addUser(user);
     }
 
 
     public void updatedUserName(int id, String name) {
-        singleInstance.updatedUserName(id,name);
+        userRepository.updatedUserName(id, name);
     }
 
     public void updateUserPassword(int id, String password) {
-        singleInstance.updateUserPassword(id,password);
+        userRepository.updateUserPassword(id, password);
 
     }
 
     public void updateUserEmail(int id, String email) {
-        singleInstance.updateUserEmail(id,email);
+        userRepository.updateUserEmail(id, email);
     }
 
-    public void deleteUser(int id) {singleInstance.deleteUser(id);}
+    public void deleteUser(int id) {
+        userRepository.deleteUser(id);
+    }
 
 }
