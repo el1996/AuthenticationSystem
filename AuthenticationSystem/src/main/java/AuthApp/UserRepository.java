@@ -1,16 +1,17 @@
 package AuthApp;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public class UserRepository {
     private static UserRepository singleInstance = null;
-
     private final String usersFilepath = "users.json";
     private Map<Integer, User> usersMap;
 
@@ -57,7 +58,7 @@ public class UserRepository {
 
     public Optional<User> getUserByEmail(String email) {
         for (User user : usersMap.values()) {
-            if (user.getEmail() == email) {
+            if (user.getEmail().compareTo(email) == 0) {
                 return Optional.of(user);
             }
         }
@@ -76,7 +77,8 @@ public class UserRepository {
         try (FileInputStream fileInputStream = new FileInputStream(this.usersFilepath)) {
             Gson gson = new Gson();
             JsonReader jsonReader = new JsonReader(new InputStreamReader(fileInputStream));
-            this.usersMap = gson.fromJson(jsonReader, HashMap.class);
+            Type mapType = new TypeToken<Map<Integer, User>>(){}.getType();
+            this.usersMap = gson.fromJson(jsonReader, mapType);
 
         } catch (FileNotFoundException ex) {
             saveToFile();
