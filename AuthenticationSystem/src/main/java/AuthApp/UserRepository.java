@@ -9,13 +9,22 @@ import java.util.Map;
 import java.util.Optional;
 
 public class UserRepository {
+    private static UserRepository singleInstance = null;
 
     private final String usersFilepath = "users.json";
     private Map<Integer, User> usersMap;
 
 
-    public UserRepository() {
+    private UserRepository() {
         parseConfigToMap();
+    }
+
+    public static UserRepository getInstance() {
+        if (singleInstance == null) {
+            singleInstance = new UserRepository();
+        }
+
+        return singleInstance;
     }
 
     public Optional<User> getUser(int id) {

@@ -2,49 +2,42 @@ package AuthApp;
 
 import java.util.Optional;
 
-public class AuthenticationService {
+class AuthenticationService {
+    private static AuthenticationService singleInstance = null;
+    private UserRepository userRepository;
+    private static final int TOKEN_LENGTH = 10;
 
-    private static UserRepository singleInstance = null;
+    private AuthenticationService() {
+        userRepository = UserRepository.getInstance();
+    }
 
-    private AuthenticationService() {UserRepository = AuthApp.UserRepository.getInstance();}
-
-    public static UserRepository getInstance() {
+    public static AuthenticationService getInstance() {
         if (singleInstance == null) {
-            singleInstance = new UserRepository();
+            singleInstance = new AuthenticationService();
         }
 
         return singleInstance;
     }
 
+    public boolean isValidCredentials(String email, String password) {
+        Optional<User> user = userRepository.getUserByEmail(email);
 
-    public boolean isEmailConfirmed (String mail)
-    {
-        if (singleInstance.getUserByEmail(mail).equal((Optional.empty())))
-            return true;
-        else return false;
+        if (user.isPresent()) {
+            return user.get().getPassword() == password;
+        }
+
+        return false;
     }
 
-    public boolean isIdConfirmed (int id)
-    {
-        if (singleInstance.getUser(id).equal((Optional.empty())))
-            return true;
-        else return false;
-    }
-
-
-
-    public static String generateToken(int stringLength) {
+    public static String generateToken() {
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder sb = new StringBuilder(stringLength);
+        StringBuilder sb = new StringBuilder(TOKEN_LENGTH);
 
-        for(int i = 0; i < stringLength; ++i) {
-            int index = (int)((double)AlphaNumericString.length() * Math.random());
+        for (int i = 0; i < TOKEN_LENGTH; ++i) {
+            int index = (int) ((double) AlphaNumericString.length() * Math.random());
             sb.append(AlphaNumericString.charAt(index));
         }
 
         return sb.toString();
     }
-
-
-
 }
