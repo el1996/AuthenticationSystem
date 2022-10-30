@@ -1,34 +1,41 @@
 package AuthApp;
 
-import java.util.Optional;
+import static AuthApp.User.userFactory;
 
 public class UserService {
 
-    public boolean isEmailConfirmed (String mail)
-    {
-        if (getUserByEmail(mail).equal((Optional.empty())))
-            return true;
-        else return false;
-    }
+    private static UserRepository singleInstance = null;
 
-    public boolean isIdConfirmed (int id)
-    {
-        if (getUser(id).equal((Optional.empty())))
-            return true;
-        else return false;
-    }
+    private UserService() {UserRepository = AuthApp.UserRepository.getInstance();}
 
-
-
-    public static String generateToken(int stringLength) {
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder sb = new StringBuilder(stringLength);
-
-        for(int i = 0; i < stringLength; ++i) {
-            int index = (int)((double)AlphaNumericString.length() * Math.random());
-            sb.append(AlphaNumericString.charAt(index));
+    public static UserRepository getInstance() {
+        if (singleInstance == null) {
+            singleInstance = new UserRepository();
         }
 
-        return sb.toString();
+        return singleInstance;
     }
+
+    public void createUser(String email,String name,String password)
+    {
+        User user = userFactory(email,name,password);
+        singleInstance.addUser(user);
+    }
+
+
+    public void updatedUserName(int id, String name) {
+        singleInstance.updatedUserName(id,name);
+    }
+
+    public void updateUserPassword(int id, String password) {
+        singleInstance.updateUserPassword(id,password);
+
+    }
+
+    public void updateUserEmail(int id, String email) {
+        singleInstance.updateUserEmail(id,email);
+    }
+
+    public void deleteUser(int id) {singleInstance.deleteUser(id);}
+
 }
