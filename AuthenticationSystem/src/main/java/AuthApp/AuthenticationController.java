@@ -1,16 +1,17 @@
 package AuthApp;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class AuthenticationController {
     private static AuthenticationController singleInstance = null;
     private AuthenticationService authenticationService;
 
-    private AuthenticationController() {
+    private AuthenticationController() throws IOException {
         authenticationService = AuthenticationService.getInstance();
     }
 
-    public static AuthenticationController getInstance() {
+    public static AuthenticationController getInstance() throws IOException {
         if (singleInstance == null) {
             singleInstance = new AuthenticationController();
         }

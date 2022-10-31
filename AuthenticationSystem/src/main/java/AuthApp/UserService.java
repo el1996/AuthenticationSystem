@@ -1,15 +1,19 @@
 package AuthApp;
 
-class UserService {
+
+import java.io.IOException;
+
+public class UserService {
+
 
     private static UserService singleInstance = null;
     private UserRepository userRepository;
 
-    private UserService() {
-        userRepository = UserRepository.getInstance();
+    private UserService() throws IOException {
+        userRepository = AuthApp.UserRepository.getInstance();
     }
 
-    public static UserService getInstance() {
+    public static UserService getInstance() throws IOException {
         if (singleInstance == null) {
             singleInstance = new UserService();
         }
