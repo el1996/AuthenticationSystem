@@ -23,8 +23,36 @@ public class Client {
         authenticationController.register(email, name, password);
     }
 
+    public void updateName(String email, String name) {
 
-    public void deleteUser(String email) {
+        if (authenticationController.isValidName(name)) {
+            userController.updateUserNameByEmail(email, name);
+        }
+        else throw new IllegalArgumentException("Invalid name!");
+
+    }
+
+    public void updateEmail(String email, String newEmail) {
+
+        if (authenticationController.isValidEmail(newEmail)) {
+            userController.updateUserEmailByEmail(email, newEmail);
+        }
+        else throw new IllegalArgumentException("Invalid email!");
+
+    }
+
+    public void updatePassword(String email, String password) {
+
+        if (authenticationController.isValidPassword(password)) {
+            userController.updateUserPasswordByEmail(email, password);
+        }
+        else throw new IllegalArgumentException("Invalid password!");
+
+    }
+
+
+
+        public void deleteUser(String email) {
         userController.deleteUser(email);
     }
 }

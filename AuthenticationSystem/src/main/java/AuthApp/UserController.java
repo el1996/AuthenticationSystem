@@ -18,6 +18,22 @@ public class UserController {
         return singleInstance;
     }
 
+    public void updateUserNameByEmail(String email,String name)
+    {
+        userService.updateUserNamByEmail(email,name);
+    }
+
+    public void updateUserEmailByEmail(String email,String newEmail)
+    {
+        userService.updateUserEmailByEmail(email,newEmail);
+    }
+
+    public void updateUserPasswordByEmail (String email,String password)
+    {
+        userService.updateUserPasswordByEmail(email,password);
+    }
+
+
 
     public void deleteUser(String email)
     {

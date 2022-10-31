@@ -24,6 +24,30 @@ class UserService {
         userRepository.addUser(user);
     }
 
+
+    public void updateUserNamByEmail(String email,String name)
+    {
+        User user= userRepository.getUserByEmail(email).get();
+        user.setName(name);
+        userRepository.updatedUser(user);
+    }
+
+    public void updateUserEmailByEmail(String email,String newEmail)
+    {
+        User user= userRepository.getUserByEmail(email).get();
+        user.setEmail(newEmail);
+        userRepository.updatedUser(user);
+    }
+
+
+    public void updateUserPasswordByEmail(String email,String password)
+    {
+        User user= userRepository.getUserByEmail(email).get();
+        user.setPassword(password);
+        userRepository.updatedUser(user);
+    }
+
+
     public void deleteUser(String email) {
         Optional<User> user = userRepository.getUserByEmail(email);
         if (user.isPresent()) {
