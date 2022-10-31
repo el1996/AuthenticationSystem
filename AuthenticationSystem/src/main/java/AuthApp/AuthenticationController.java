@@ -27,7 +27,7 @@ public class AuthenticationController {
         return this.authenticationService.login(email, password);
     }
 
-    public void register(String email, String name, String password) {
+    public boolean register(String email, String name, String password) {
         if (!isValidEmail(email)) {
             throw new IllegalArgumentException("Invalid email address!");
         }
@@ -38,14 +38,14 @@ public class AuthenticationController {
             throw new IllegalArgumentException("Invalid password!");
         }
 
-        this.authenticationService.register(email, name, password);
+        return this.authenticationService.register(email, name, password);
     }
 
-    private boolean isValidPassword(String password) {
+    public boolean isValidPassword(String password) {
         return password.matches(".*[A-Z].*") && password.length() >= 6;
     }
 
-    private boolean isValidName(String Name) {
+    public boolean isValidName(String Name) {
         return Name.matches("^[ A-Za-z]+$");
     }
 
@@ -55,5 +55,9 @@ public class AuthenticationController {
         return Pattern.compile(regexPattern)
                 .matcher(emailAddress)
                 .matches();
+    }
+
+    public void updateTokenEmailKey(String oldEmail, String newEmail) {
+        this.authenticationService.updateTokenEmailKey(oldEmail, newEmail);
     }
 }
