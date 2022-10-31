@@ -21,33 +21,24 @@ public class Client {
         authenticationController.register(email, name, password);
     }
 
-    public void updateName(String email, String name) {
-
-        if (authenticationController.isValidName(name)) {
-            userController.updateUserNameByEmail(email, name);
-        }
-        throw new IllegalArgumentException("Invalid name!");
+    public void updateName(String email, String name) throws IOException {
+        userController.updateName(email,name);
     }
 
     public void updateEmail(String currentEmail, String newEmail) {
 
-        if (authenticationController.isValidEmail(newEmail)) {
-            userController.updateEmail(currentEmail, newEmail);
+        if (!authenticationController.isValidEmail(newEmail)) {
+            throw new IllegalArgumentException("Invalid email!");
         }
-        throw new IllegalArgumentException("Invalid email!");
+        userController.updateEmail(currentEmail, newEmail);
     }
 
     public void updatePassword(String email, String newPassword) {
 
-        if (authenticationController.isValidPassword(newPassword)) {
-            userController.updatePassword(email, newPassword);
+        if (!authenticationController.isValidPassword(newPassword)) {
+            throw new IllegalArgumentException("Invalid Password!");
         }
-        throw new IllegalArgumentException("Invalid Password!");
+        userController.updatePassword(email, newPassword);
     }
-
-    public void delete(String email) {
-
-        userController.delete(email);
-    }
-
+    
 }

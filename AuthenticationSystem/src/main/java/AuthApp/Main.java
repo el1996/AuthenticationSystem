@@ -1,8 +1,11 @@
 package AuthApp;
 
+import java.io.IOException;
+import java.util.regex.Pattern;
+
 public class Main {
-    public static void main(String args[])
-    {
+    public static void main(String args[]) throws IOException {
+
         Client client = new Client();
         client.register("lior.mathan@gmail.com", "Lior Mathan", "1234As");
         client.register("Nitzan@gmail.com", "Nitzan Lahav", "987Nl11");
@@ -13,6 +16,6 @@ public class Main {
         client.updateEmail("Nitzan@gmail.com", "Nitzan1@gmail.com");
         client.updatePassword("lior.mathan@gmail.com", "148opsL");
 
-        client.delete("Elchanan@gmail.com");
+
     }
 }

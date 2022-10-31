@@ -2,6 +2,7 @@ package AuthApp;
 
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class UserService {
 
@@ -31,8 +32,26 @@ public class UserService {
         userRepository.updatedUserNameByEmail(email, name);
     }
 
-    public void updatedUserName(int id, String name) {
-        userRepository.updatedUserName(id, name);
+    public void updatedUserEmail(String email, String name) {
+        Optional<User> user = userRepository.getUserByEmail(email);
+
+        if (user.isPresent()) {
+            user.get().setEmail(email);
+            userRepository.updatedUser(user.get());
+        } else {
+            throw new IllegalArgumentException(String.format("Email address %s does not match any user.", email));
+        }
+    }
+
+    public void updatedUserName(String email, String name) {
+        Optional<User> user = userRepository.getUserByEmail(email);
+
+        if (user.isPresent()) {
+            user.get().setName(name);
+            userRepository.updatedUser(user.get());
+        } else {
+            throw new IllegalArgumentException(String.format("Email address %s does not match any user.", email));
+        }
     }
 
     public void updateUserPassword(String email, String password) {

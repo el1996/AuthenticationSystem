@@ -56,4 +56,5 @@ public class AuthenticationController {
                 .matcher(emailAddress)
                 .matches();
     }
+
 }

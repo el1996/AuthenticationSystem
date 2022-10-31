@@ -33,9 +33,13 @@ public class UserController {
         userService.updateUserPassword(email, newPassword);
     }
 
-    public void delete(String email) {
+    public void updateName(String email, String name) throws IOException {
+        AuthenticationController authenticationController = AuthenticationController.getInstance();
+        if (!authenticationController.isValidName(name)) {
+            throw new IllegalArgumentException("Invalid name!");
+        }
+        userService.updatedUserName(email, name);
 
-        userService.deleteUser(email);
     }
 
 }
