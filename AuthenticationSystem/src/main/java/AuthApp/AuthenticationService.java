@@ -21,6 +21,7 @@ class AuthenticationService {
         return singleInstance;
     }
 
+
     public String login(String email, String password) {
         String token = isValidCredentials(email, password) ? generateToken() : null;
         return token;
