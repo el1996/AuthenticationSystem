@@ -29,22 +29,22 @@ public class UserRepository {
         return singleInstance;
     }
 
-    public Optional<User> getUser(int id) {
-        if (!usersMap.containsKey(id)) {
-            return Optional.empty();
-        }
-
-        return Optional.of(this.usersMap.get(id));
-    }
-
-    public void addUser(User user) {
+    public boolean addUser(User user) {
         usersMap.put(user.getId(), user);
-        writeToFile(user);
+        return writeToFile(user);
     }
 
-    public void updatedUser(User user) {
+    public boolean updatedUser(User user) {
         this.usersMap.put(user.getId(), user);
-        writeToFile(user);
+        return writeToFile(user);
+    }
+
+    public boolean deleteUser(User user) {
+        this.usersMap.remove(user.getId());
+        File userFile = new File(getUserFilepath(user));
+        userFile.delete();
+
+        return true;
     }
 
     public Optional<User> getUserByEmail(String email) {
@@ -55,12 +55,6 @@ public class UserRepository {
         }
 
         return Optional.empty();
-    }
-
-    public void deleteUser(User user) {
-        this.usersMap.remove(user.getId());
-        File userFile = new File(getUserFilepath(user));
-        userFile.delete();
     }
 
     private String getUserFilepath(User user) {
@@ -80,16 +74,16 @@ public class UserRepository {
             } catch (IOException ex) {
                 throw new RuntimeException(String.format("Error occurred while trying to open: %s", fileEntry.getPath()));
             }
-
         }
     }
 
-    private void writeToFile(User user) {
+    private boolean writeToFile(User user) {
         String absoluteFilePath = getUserFilepath(user);
 
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(absoluteFilePath)))) {
             Gson gson = new Gson();
             gson.toJson(user, writer);
+            return true;
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Filename: \"" + absoluteFilePath + "\" was not found.");
         } catch (IOException e) {

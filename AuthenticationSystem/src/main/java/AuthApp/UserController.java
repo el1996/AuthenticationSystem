@@ -18,26 +18,40 @@ public class UserController {
         return singleInstance;
     }
 
-    public void updateUserNameByEmail(String email,String name)
-    {
-        userService.updateUserNamByEmail(email,name);
+    public boolean updateUserName(String email, String name, String token) throws IOException {
+        AuthenticationController authenticationController = AuthenticationController.getInstance();
+
+        if (!authenticationController.isValidName(name)) {
+            throw new IllegalArgumentException(String.format("%s is invalid name!", name));
+        }
+
+        return userService.updateUserName(email, name, token);
     }
 
-    public void updateUserEmailByEmail(String email,String newEmail)
-    {
-        userService.updateUserEmailByEmail(email,newEmail);
+    public boolean updateUserEmail(String email, String newEmail, String token) throws IOException {
+        AuthenticationController authenticationController = AuthenticationController.getInstance();
+
+        if (!authenticationController.isValidEmail(newEmail)) {
+            throw new IllegalArgumentException(String.format("%s is invalid email!", newEmail));
+        }
+
+        boolean success = userService.updateUserEmail(email, newEmail, token);
+        authenticationController.updateTokenEmailKey(email, newEmail);
+
+        return success;
     }
 
-    public void updateUserPasswordByEmail (String email,String password)
-    {
-        userService.updateUserPasswordByEmail(email,password);
+    public boolean updateUserPassword(String email, String password, String token) throws IOException {
+        AuthenticationController authenticationController = AuthenticationController.getInstance();
+
+        if (!authenticationController.isValidPassword(password)) {
+            throw new IllegalArgumentException(String.format("%s is invalid password!", password));
+        }
+
+        return userService.updateUserPassword(email, password, token);
     }
 
-
-
-    public void deleteUser(String email)
-    {
-        userService.deleteUser(email);
+    public boolean deleteUser(String email, String token) throws IOException {
+       return userService.deleteUser(email, token);
     }
-
 }
