@@ -1,12 +1,14 @@
 package AuthApp;
 
 
+import java.io.IOException;
+
 public class Client {
     private final AuthenticationController authenticationController;
     private final UserController userController;
     private String token;
 
-    public Client() {
+    public Client() throws IOException {
         this.authenticationController = AuthenticationController.getInstance();
         this.userController = UserController.getInstance();
     }
