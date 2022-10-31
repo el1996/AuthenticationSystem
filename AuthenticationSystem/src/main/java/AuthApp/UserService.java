@@ -1,11 +1,9 @@
 package AuthApp;
 
-
 import java.io.IOException;
+import java.util.Optional;
 
-public class UserService {
-
-
+class UserService {
     private static UserService singleInstance = null;
     private UserRepository userRepository;
 
@@ -21,25 +19,15 @@ public class UserService {
         return singleInstance;
     }
 
-    public void createUser(String email, String name, String password)
-    {
+    public void createUser(String email, String name, String password) {
         User user = User.createUser(email, name, password);
         userRepository.addUser(user);
     }
 
-    public void updatedUserName(int id, String name) {
-        userRepository.updatedUserName(id, name);
-    }
-
-    public void updateUserPassword(int id, String password) {
-        userRepository.updateUserPassword(id, password);
-    }
-
-    public void updateUserEmail(int id, String email) {
-        userRepository.updateUserEmail(id, email);
-    }
-
-    public void deleteUser(int id) {
-        userRepository.deleteUser(id);
+    public void deleteUser(String email) {
+        Optional<User> user = userRepository.getUserByEmail(email);
+        if (user.isPresent()) {
+            userRepository.deleteUser(user.get());
+        } else throw new IllegalArgumentException(String.format("Email %s does not match any user", email));
     }
 }

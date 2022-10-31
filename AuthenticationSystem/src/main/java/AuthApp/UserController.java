@@ -17,4 +17,11 @@ public class UserController {
 
         return singleInstance;
     }
+
+
+    public void deleteUser(String email)
+    {
+        userService.deleteUser(email);
+    }
+
 }
