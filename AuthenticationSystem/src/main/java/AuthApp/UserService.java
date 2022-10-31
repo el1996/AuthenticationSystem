@@ -1,15 +1,17 @@
 package AuthApp;
 
+import java.io.IOException;
+
 public class UserService {
 
     private static UserService singleInstance = null;
     private UserRepository userRepository;
 
-    private UserService() {
+    private UserService() throws IOException {
         userRepository = AuthApp.UserRepository.getInstance();
     }
 
-    public static UserService getInstance() {
+    public static UserService getInstance() throws IOException {
         if (singleInstance == null) {
             singleInstance = new UserService();
         }
@@ -23,22 +25,22 @@ public class UserService {
         userRepository.addUser(user);
     }
 
+//
+//    public void updatedUserName(int id, String name) {
+//        userRepository.updatedUserName(id, name);
+//    }
+//
+//    public void updateUserPassword(int id, String password) {
+//        userRepository.updateUserPassword(id, password);
+//
+//    }
+//
+//    public void updateUserEmail(int id, String email) {
+//        userRepository.updateUserEmail(id, email);
+//    }
 
-    public void updatedUserName(int id, String name) {
-        userRepository.updatedUserName(id, name);
-    }
-
-    public void updateUserPassword(int id, String password) {
-        userRepository.updateUserPassword(id, password);
-
-    }
-
-    public void updateUserEmail(int id, String email) {
-        userRepository.updateUserEmail(id, email);
-    }
-
-    public void deleteUser(int id) {
-        userRepository.deleteUser(id);
-    }
+//    public void deleteUser(int id) {
+//        userRepository.deleteUser(id);
+//    }
 
 }

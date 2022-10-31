@@ -1,5 +1,6 @@
 package AuthApp;
 
+import java.io.IOException;
 import java.util.Optional;
 
 class AuthenticationService {
@@ -8,11 +9,11 @@ class AuthenticationService {
     private UserRepository userRepository;
     private static final int TOKEN_LENGTH = 10;
 
-    private AuthenticationService() {
+    private AuthenticationService() throws IOException {
         userRepository = UserRepository.getInstance();
     }
 
-    public static AuthenticationService getInstance() {
+    public static AuthenticationService getInstance() throws IOException {
         if (singleInstance == null) {
             singleInstance = new AuthenticationService();
         }

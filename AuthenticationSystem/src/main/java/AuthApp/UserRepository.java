@@ -1,11 +1,11 @@
 package AuthApp;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
 import java.io.*;
-import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -16,11 +16,12 @@ public class UserRepository {
     private Map<Integer, User> usersMap;
 
 
-    private UserRepository() {
+    private UserRepository() throws IOException {
+        Files.createDirectories(Paths.get(this.usersFilepath));
         parseConfigToMap();
     }
 
-    public static UserRepository getInstance() {
+    public static UserRepository getInstance() throws IOException {
         if (singleInstance == null) {
             singleInstance = new UserRepository();
         }
