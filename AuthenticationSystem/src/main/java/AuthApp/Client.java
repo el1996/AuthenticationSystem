@@ -55,25 +55,4 @@ public class Client {
 
         return userController.deleteUser(email, this.token);
     }
-
-    public void updateName(String email, String name) throws IOException {
-        userController.updateName(email,name);
-    }
-
-    public void updateEmail(String currentEmail, String newEmail) {
-
-        if (!authenticationController.isValidEmail(newEmail)) {
-            throw new IllegalArgumentException("Invalid email!");
-        }
-        userController.updateEmail(currentEmail, newEmail);
-    }
-
-    public void updatePassword(String email, String newPassword) {
-
-        if (!authenticationController.isValidPassword(newPassword)) {
-            throw new IllegalArgumentException("Invalid Password!");
-        }
-        userController.updatePassword(email, newPassword);
-    }
-    
 }
