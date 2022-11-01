@@ -27,7 +27,7 @@ public class AuthenticationController {
         return this.authenticationService.login(email, password);
     }
 
-    public void register(String email, String name, String password) {
+    public boolean register(String email, String name, String password) {
         if (!isValidEmail(email)) {
             throw new IllegalArgumentException("Invalid email address!");
         }
@@ -38,7 +38,7 @@ public class AuthenticationController {
             throw new IllegalArgumentException("Invalid password!");
         }
 
-        this.authenticationService.register(email, name, password);
+        return this.authenticationService.register(email, name, password);
     }
 
     public boolean isValidPassword(String password) {
@@ -49,7 +49,7 @@ public class AuthenticationController {
         return Name.matches("^[ A-Za-z]+$");
     }
 
-    public boolean isValidEmail(String emailAddress) {
+    public static boolean isValidEmail(String emailAddress) {
         String regexPattern = "^(.+)@(\\S+)$";
 
         return Pattern.compile(regexPattern)
@@ -57,4 +57,7 @@ public class AuthenticationController {
                 .matches();
     }
 
+    public void updateTokenEmailKey(String oldEmail, String newEmail) {
+        this.authenticationService.updateTokenEmailKey(oldEmail, newEmail);
+    }
 }

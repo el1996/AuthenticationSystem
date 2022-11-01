@@ -1,12 +1,10 @@
 package AuthApp;
 
-
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
-public class UserService {
-
-
+class UserService {
     private static UserService singleInstance = null;
     private UserRepository userRepository;
 
@@ -22,47 +20,58 @@ public class UserService {
         return singleInstance;
     }
 
-    public void createUser(String email, String name, String password)
-    {
-        User user = User.createUser(email, name, password);
-        userRepository.addUser(user);
-    }
-
-    public void updatedUserNameByEmail(String email, String name) {
-        userRepository.updatedUserNameByEmail(email, name);
-    }
-
-    public void updatedUserEmail(String email, String name) {
-        Optional<User> user = userRepository.getUserByEmail(email);
-
-        if (user.isPresent()) {
-            user.get().setEmail(email);
-            userRepository.updatedUser(user.get());
-        } else {
-            throw new IllegalArgumentException(String.format("Email address %s does not match any user.", email));
-        }
-    }
-
-    public void updatedUserName(String email, String name) {
+    public boolean updateUserName(String email, String name, String token) throws IOException {
+        validateToken(email, token);
         Optional<User> user = userRepository.getUserByEmail(email);
 
         if (user.isPresent()) {
             user.get().setName(name);
-            userRepository.updatedUser(user.get());
+            return userRepository.updatedUser(user.get());
         } else {
-            throw new IllegalArgumentException(String.format("Email address %s does not match any user.", email));
+            throw new IllegalArgumentException(String.format("Email address: %s does not exist", email));
         }
     }
 
-    public void updateUserPassword(String email, String password) {
-        userRepository.updateUserPassword(email, password);
+    public boolean updateUserEmail(String email, String newEmail, String token) throws IOException {
+        validateToken(email, token);
+
+        Optional<User> user = userRepository.getUserByEmail(email);
+        if (user.isPresent()) {
+            user.get().setEmail(newEmail);
+            return userRepository.updatedUser(user.get());
+        } else {
+            throw new IllegalArgumentException(String.format("Email address %s does not match any user", email));
+        }
     }
 
-    public void updateUserEmail(String currentEmail, String newEmail) {
-        userRepository.updateUserEmail(currentEmail, newEmail);
+    public boolean updateUserPassword(String email, String password, String token) throws IOException {
+        validateToken(email, token);
+
+        Optional<User> user = userRepository.getUserByEmail(email);
+        if (user.isPresent()) {
+            user.get().setPassword(password);
+            return userRepository.updatedUser(user.get());
+        } else {
+            throw new IllegalArgumentException(String.format("Email address %s does not match any user", email));
+        }
     }
 
-    public void deleteUser(String email) {
-        userRepository.deleteUser(email);
+    public boolean deleteUser(String email, String token) throws IOException {
+        validateToken(email, token);
+
+        Optional<User> user = userRepository.getUserByEmail(email);
+        if (user.isPresent()) {
+            return userRepository.deleteUser(user.get());
+        } else {
+            throw new IllegalArgumentException(String.format("Email address %s does not match any user", email));
+        }
+    }
+
+    private void validateToken(String email, String token) throws IOException {
+        AuthenticationService authenticationService = AuthenticationService.getInstance();
+
+        if (!authenticationService.isValidToken(email, token)) {
+            throw new AccessDeniedException(String.format("User with email address: %s is not logged in!", email));
+        }
     }
 }
