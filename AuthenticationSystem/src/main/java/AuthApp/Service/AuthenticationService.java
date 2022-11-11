@@ -26,6 +26,7 @@ public class AuthenticationService {
         }
 
         return token;
+        //
     }
 
     public boolean register(String email, String name, String password) {
