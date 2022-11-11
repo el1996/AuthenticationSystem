@@ -1,7 +1,9 @@
-package AuthApp;
+package AuthApp.Respository;
 
+import AuthApp.Entity.User;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -10,8 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class UserRepository {
-    private static UserRepository singleInstance = null;
+
     private final String usersFilepath = "UsersDB";
     private Map<Integer, User> usersMap;
 
@@ -19,14 +22,6 @@ public class UserRepository {
     private UserRepository() throws IOException {
         Files.createDirectories(Paths.get(this.usersFilepath));
         parseConfigToMap();
-    }
-
-    public static UserRepository getInstance() throws IOException {
-        if (singleInstance == null) {
-            singleInstance = new UserRepository();
-        }
-
-        return singleInstance;
     }
 
     public boolean addUser(User user) {
@@ -86,6 +81,7 @@ public class UserRepository {
             return true;
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Filename: \"" + absoluteFilePath + "\" was not found.");
+            //here need exception
         } catch (IOException e) {
             throw new RuntimeException("Error occurred while trying to open new default json file.");
         }

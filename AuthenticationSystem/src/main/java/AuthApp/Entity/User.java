@@ -1,4 +1,4 @@
-package AuthApp;
+package AuthApp.Entity;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -9,6 +9,8 @@ public class User {
     private String email;
     private String name;
     private String password;
+
+    public User() {this.id = count.incrementAndGet();}
 
     private User(String email, String name, String password) {
         this.id = count.incrementAndGet();

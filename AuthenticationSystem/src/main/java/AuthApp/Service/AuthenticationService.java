@@ -1,29 +1,22 @@
-package AuthApp;
+package AuthApp.Service;
 
-import java.io.IOException;
+import AuthApp.Entity.User;
+import AuthApp.Respository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
-class AuthenticationService {
 
-    private static AuthenticationService singleInstance = null;
+@Service
+public class AuthenticationService {
+    @Autowired
     private UserRepository userRepository;
-    private Map<String, String> usersTokens;
+    private Map<String, String> usersTokens = new HashMap<>();
     private static final int TOKEN_LENGTH = 10;
-
-    private AuthenticationService() throws IOException {
-        userRepository = UserRepository.getInstance();
-        usersTokens = new HashMap<>();
-    }
-
-    public static AuthenticationService getInstance() throws IOException {
-        if (singleInstance == null) {
-            singleInstance = new AuthenticationService();
-        }
-
-        return singleInstance;
-    }
 
     public String login(String email, String password) {
         String token = isValidCredentials(email, password) ? generateToken() : null;
@@ -37,7 +30,7 @@ class AuthenticationService {
 
     public boolean register(String email, String name, String password) {
         if (isExistingEmail(email)) {
-            throw new IllegalArgumentException("This email address already exists!");
+            return false;
         }
 
         User user = User.createUser(email, name, password);
@@ -47,7 +40,13 @@ class AuthenticationService {
     }
 
     public boolean isValidToken(String email, String token) {
-        return this.usersTokens.get(email).compareTo(token) == 0;
+        if (usersTokens != null) {
+            String tokenFromMap = usersTokens.get(email);
+            if (tokenFromMap != null) {
+                return tokenFromMap.compareTo(token) == 0;
+            }
+        }
+        return false;
     }
 
     public void updateTokenEmailKey(String oldEmail, String newEmail) {
@@ -81,5 +80,21 @@ class AuthenticationService {
         }
 
         return sb.toString();
+    }
+
+    public boolean isValidName(String Name) {
+        return Name.matches("^[ A-Za-z]+$");
+    }
+
+    public boolean isValidEmail(String emailAddress) {
+        String regexPattern = "^(.+)@(\\S+)$";
+
+        return Pattern.compile(regexPattern)
+                .matcher(emailAddress)
+                .matches();
+    }
+
+    public boolean isValidPassword(String password) {
+        return password.matches(".*[A-Z].*") && password.length() >= 6;
     }
 }
